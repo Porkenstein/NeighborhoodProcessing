@@ -28,7 +28,10 @@ class DanProcessor : public QObject
 {
   Q_OBJECT;
   
+  private:
+    bool filter(Image& image, int** mask, int mask_w, int mask_h);
+  
   public slots:
-    bool Menu_DanFunctions_Negate(Image& image);
+    bool Menu_Filters_3x3SmoothingFilter(Image& image);
 };
 
