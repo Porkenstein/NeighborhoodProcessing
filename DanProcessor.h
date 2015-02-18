@@ -30,8 +30,10 @@ class DanProcessor : public QObject
   
   private:
     bool filter(Image& image, int** mask, int mask_w, int mask_h);
+    int** alloc2d(int w, int h);
+    void  dealloc2d(int** array, int w, int h);
   
   public slots:
-    bool Menu_Filters_3x3SmoothingFilter(Image& image);
+    bool Menu_Smoothing_3x3SmoothingFilter(Image& image);
 };
 

@@ -1,5 +1,5 @@
 *.o
 moc_*
-prog1
+prog*
 Makefile
 *~

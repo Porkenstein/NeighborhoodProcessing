@@ -27,7 +27,7 @@ bool DanProcessor::filter(Image& image, int** mask, int mask_w, int mask_h)
   int sum[3];                           // Sum of all colors
   int center_x;                         // Center of mask
   int center_y;                         // Center of mask
-  int temp, i, j, k, l, x, y;           // Temporary variables
+  int i, j, k, l, x, y;                 // Temporary variables
   
   // Copy image due to nature of algorithm
   copy = image;
@@ -62,8 +62,8 @@ bool DanProcessor::filter(Image& image, int** mask, int mask_w, int mask_h)
         for (l = 0; l < mask_w; ++l)    // Loop over mask columns
         {
           // Temporarily store variable of current pixel to sum
-          x = l + (l - center_x);
-          y = k + (k - center_y);
+          x = j + (l - center_x);
+          y = i + (k - center_y);
           
           // If a pixel would be out of bounds, use nearest valid pixel
           if (x < 0)      x = 0;
@@ -72,9 +72,9 @@ bool DanProcessor::filter(Image& image, int** mask, int mask_w, int mask_h)
           if (y >= img_h) y = img_h - 1;
           
           // Add RGB values to sum with weights
-          sum[0] = copy[y][x].Red() * mask[k][l];
-          sum[1] = copy[y][x].Green() * mask[k][l];
-          sum[2] = copy[y][x].Blue() * mask[k][l];
+          sum[0] += copy[y][x].Red() * mask[k][l];
+          sum[1] += copy[y][x].Green() * mask[k][l];
+          sum[2] += copy[y][x].Blue() * mask[k][l];
         }
       }
       
@@ -98,6 +98,22 @@ bool DanProcessor::filter(Image& image, int** mask, int mask_w, int mask_h)
   return true;
 }
 
+int** DanProcessor::alloc2d(int w, int h)
+{
+  int** array;
+  array = new int* [h];
+  for (int i = 0; i < h; i++)
+    array[i] = new int [w];
+  return array;
+}
+
+void DanProcessor::dealloc2d(int** array, int w, int h)
+{
+  for (int i = 0; i < h; i++)
+    delete [] array[i];
+  delete [] array;
+}
+
 /***************************************************************************//**
  * Menu_DanFunctions_Negate
  * Author - Dan Andrus
@@ -110,17 +126,35 @@ bool DanProcessor::filter(Image& image, int** mask, int mask_w, int mask_h)
  * Returns
  *          true if successful, false if not
  ******************************************************************************/
-bool DanProcessor::Menu_Filters_3x3SmoothingFilter(Image& image)
+bool DanProcessor::Menu_Smoothing_3x3SmoothingFilter(Image& image)
 {
   // Make sure image isn't null
   if (image.IsNull()) return false;
+  bool result;
   
-  // Copy existing image due to nature of operation
-  int mask[3][3] = {
-    {1, 2, 1},
-    {2, 4, 2},
-    {1, 2, 1}
-  };
+  // Build filter mask
+  int** mask = alloc2d(3, 3);
   
-  return filter(image, mask, 3, 3);
+  // Indendation + brackets for visual reasons
+  {
+    mask[0][0] = 1;
+    mask[0][1] = 2;
+    mask[0][2] = 1;
+    
+    mask[1][0] = 2;
+    mask[1][1] = 4;
+    mask[1][2] = 2;
+    
+    mask[2][0] = 1;
+    mask[2][1] = 2;
+    mask[2][2] = 1;
+  }
+  
+  // Apply filter to image
+  result = filter(image, mask, 3, 3);
+  
+  dealloc2d(mask, 3, 3);
+  
+  return result;
 }
+
