@@ -29,5 +29,14 @@ class DerekProcessor : public QObject
   Q_OBJECT;
 
   public slots:
-    bool Menu_DerekFunctions_ApplyGamma(Image& image);
+   bool Menu_DerekFunctions_MinMaxStandardDeviationEdgeDetection(Image& image);
+   bool Menu_DerekFunctions_NoiseCleanFilter(Image& image);
+   bool Menu_DerekFunctions_MeanFilter(Image& image);
+   bool Menu_DerekFunctions_KirschEdgeDetection(Image& image);
+   bool Menu_DerekFunctions_MedianFilter(Image& image);
+   bool Menu_DerekFunctions_KirschEdgeMagnitude(Image& image);
+   bool Menu_DerekFunctions_MinimumFilter(Image& image);
+   bool Menu_DerekFunctions_StandardDeviationEdgeDetection(Image& image);
+   bool Menu_DerekFunctions_MaximumFilter(Image& image);
+   bool Menu_DerekFunctions_RangeFilter(Image& image);
 };

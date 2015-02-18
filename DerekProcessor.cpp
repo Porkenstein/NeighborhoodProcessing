@@ -3,10 +3,10 @@
  *
  * Author - Derek Stotz
  *
- * Date - January 30, 2015
+ * Date - February 26, 2015
  *
- * Point process functions implemented by Derek Stotz.  These functions are
- * named for easy addition into the image app created in prog1.cpp.
+ * Neighborhood process functions implemented by Derek Stotz.  These functions are
+ * named for easy addition into the image app created in prog2.cpp.
  ******************************************************************************/
 
 #include "DerekProcessor.h"
@@ -60,6 +60,70 @@ bool DerekProcessor::Menu_DerekFunctions_ApplyGamma(Image& image)
       image[i][j].SetBlue(memory[2][image[i][j].Blue()]);
     }
   }
-
   return true;
+}
+
+/***************************************************************************//**
+ * Menu_DerekFunctions_MinMaxStandardDeviationEdgeDetection
+ * Author - Derek Stotz
+ *
+ * Applies a so-called "Min-Max Standard Deviation" edge detection filter to the image.
+ * this is based on the filter invented for a senior design project in 2014, and is being
+ * implemented out of curiosity.  Each pixel is shaded with an intensity proportional to the
+ * size of the maximum standard deviation between any two sides of any of 8 regional bifurcations.
+ *
+ * Parameters -
+            image - the image object to manipulate.
+ *
+ * Returns
+ *          true if successful, false if not
+ ******************************************************************************/
+bool DerekProcessor::Menu_DerekFunctions_MinMaxStandardDeviationEdgeDetection(Image& image)
+{
+   return true;
+}
+
+bool DerekProcessor::Menu_DerekFunctions_NoiseCleanFilter(Image& image)
+{
+   return true;
+}
+
+bool DerekProcessor::Menu_DerekFunctions_MeanFilter(Image& image)
+{
+   return true;
+}
+
+bool DerekProcessor::Menu_DerekFunctions_KirschEdgeDetection(Image& image)
+{
+   return true;
+}
+
+bool DerekProcessor::Menu_DerekFunctions_MedianFilter(Image& image)
+{
+   return true;
+}
+
+bool DerekProcessor::Menu_DerekFunctions_KirschEdgeMagnitude(Image& image)
+{
+   return true;
+}
+
+bool DerekProcessor::Menu_DerekFunctions_MinimumFilter(Image& image)
+{
+   return true;
+}
+
+bool DerekProcessor::Menu_DerekFunctions_StandardDeviationEdgeDetection(Image& image)
+{
+   return true;
+}
+
+bool DerekProcessor::Menu_DerekFunctions_MaximumFilter(Image& image)
+{
+   return true;
+}
+
+bool DerekProcessor::Menu_DerekFunctions_RangeFilter(Image& image)
+{
+   return true;
 }
