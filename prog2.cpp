@@ -47,7 +47,7 @@ Details - The purpose of this assignment was to implement most of the point
 #include <qtimagelib.h>
 #include "DanProcessor.h"
 #include "DerekProcessor.h"
-#include "ImageLibProcessor.h"
+#include "PointProcessor.h"
 
 /***************************************************************************//**
  * main
@@ -66,7 +66,7 @@ int main(int argc, char** argv)
 {
   DanProcessor dan;
   DerekProcessor derek;
-  ImageLibProcessor ilp;
+  PointProcessor ilp;
   ImageApp app(argc, argv);
 
   app.AddActions(&dan);

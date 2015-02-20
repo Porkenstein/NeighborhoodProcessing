@@ -6,11 +6,11 @@
  * Date - Feb 26, 2015
  *
  * Implementations (done ahead of time) of various point processes. Some of them
- * were written by us for the previous assignment, and some are simple impelementations
- * of QtImageLib functions.
+ * were written by us for the previous assignment, and some are simple
+ * impelementations of QtImageLib functions.
  ******************************************************************************/
 
-#include "ImageLibProcessor.h"
+#include "PointProcessor.h"
 
 /***************************************************************************//**
  * Menu_PointProcesses_ModifiedContrastStretch

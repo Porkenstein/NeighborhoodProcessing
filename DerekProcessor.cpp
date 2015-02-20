@@ -80,50 +80,81 @@ bool DerekProcessor::Menu_DerekFunctions_ApplyGamma(Image& image)
  ******************************************************************************/
 bool DerekProcessor::Menu_DerekFunctions_MinMaxStandardDeviationEdgeDetection(Image& image)
 {
-   return true;
+  // Make sure image isn't null
+  if (image.IsNull()) return false;
+  
+  return true;
 }
 
 bool DerekProcessor::Menu_DerekFunctions_NoiseCleanFilter(Image& image)
 {
-   return true;
+  // Make sure image isn't null
+  if (image.IsNull()) return false;
+  
+  return true;
 }
 
 bool DerekProcessor::Menu_DerekFunctions_MeanFilter(Image& image)
 {
-   return true;
+  // Make sure image isn't null
+  if (image.IsNull()) return false;
+  
+  return true;
 }
 
 bool DerekProcessor::Menu_DerekFunctions_KirschEdgeDetection(Image& image)
 {
-   return true;
+  // Make sure image isn't null
+  if (image.IsNull()) return false;
+  
+  return true;
 }
 
 bool DerekProcessor::Menu_DerekFunctions_MedianFilter(Image& image)
 {
-   return true;
+  // Make sure image isn't null
+  if (image.IsNull()) return false;
+  
+  return true;
 }
 
 bool DerekProcessor::Menu_DerekFunctions_KirschEdgeMagnitude(Image& image)
 {
-   return true;
+  // Make sure image isn't null
+  if (image.IsNull()) return false;
+  
+  return true;
 }
 
 bool DerekProcessor::Menu_DerekFunctions_MinimumFilter(Image& image)
 {
-   return true;
+  // Make sure image isn't null
+  if (image.IsNull()) return false;
+  
+  return true;
 }
 
 bool DerekProcessor::Menu_DerekFunctions_StandardDeviationEdgeDetection(Image& image)
 {
-   return true;
+  // Make sure image isn't null
+  if (image.IsNull()) return false;
+  
+  return true;
 }
 
 bool DerekProcessor::Menu_DerekFunctions_MaximumFilter(Image& image)
 {
-   return true;
+  // Make sure image isn't null
+  if (image.IsNull()) return false;
+  
+  return true;
 }
 
 bool DerekProcessor::Menu_DerekFunctions_RangeFilter(Image& image)
 {
-   return true;
+  // Make sure image isn't null
+  if (image.IsNull()) return false;
+  
+  return true;
 }
+

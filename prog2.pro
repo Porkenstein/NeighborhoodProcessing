@@ -1,6 +1,6 @@
 HEADERS += DanProcessor.h DerekProcessor.h \
-    ImageLibProcessor.h
+    PointProcessor.h
 SOURCES += prog2.cpp DanProcessor.cpp DerekProcessor.cpp \
-    ImageLibProcessor.cpp
+    PointProcessor.cpp
 CONFIG += qtimagelib
 
