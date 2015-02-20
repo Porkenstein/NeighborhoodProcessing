@@ -158,3 +158,34 @@ bool DanProcessor::Menu_Smoothing_3x3SmoothingFilter(Image& image)
   return result;
 }
 
+bool DanProcessor::Menu_EdgeDetection_3x3SharpeningFilter(Image& image)
+{
+  // Make sure image isn't null
+  if (image.IsNull()) return false;
+  bool result;
+  
+  // Build filter mask
+  int** mask = alloc2d(3, 3);
+  
+  // Indendation + brackets for visual reasons
+  {
+    mask[0][0] = 0;
+    mask[0][1] = -1;
+    mask[0][2] = 0;
+    
+    mask[1][0] = -1;
+    mask[1][1] = 5;
+    mask[1][2] = -1;
+    
+    mask[2][0] = 0;
+    mask[2][1] = -1;
+    mask[2][2] = 0;
+  }
+  
+  // Apply filter to image
+  result = filter(image, mask, 3, 3);
+  
+  dealloc2d(mask, 3, 3);
+  
+  return result;
+}

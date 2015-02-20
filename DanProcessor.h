@@ -35,5 +35,6 @@ class DanProcessor : public QObject
   
   public slots:
     bool Menu_Smoothing_3x3SmoothingFilter(Image& image);
+    bool Menu_EdgeDetection_3x3SharpeningFilter(Image& image);
 };
 
