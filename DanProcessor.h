@@ -12,6 +12,10 @@
 #pragma once
 #include <qtimagelib.h>
 #include <iostream>
+#include <vector>
+#include <algorithm>
+
+using namespace std;
 
 /***************************************************************************//**
  * DanPreprocessor
@@ -29,12 +33,14 @@ class DanProcessor : public QObject
   Q_OBJECT;
   
   private:
-    bool filter(Image& image, int** mask, int mask_w, int mask_h);
+    bool filterAverage(Image& image, int** mask, int mask_w, int mask_h);
+    bool filterMedian(Image& image, int** mask, int mask_w, int mask_h);
     int** alloc2d(int w, int h);
     void  dealloc2d(int** array, int w, int h);
   
   public slots:
     bool Menu_Smoothing_3x3SmoothingFilter(Image& image);
     bool Menu_EdgeDetection_3x3SharpeningFilter(Image& image);
+    bool Menu_OS_PlusShapedMedianFilter(Image& image);
 };
 
