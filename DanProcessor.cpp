@@ -14,7 +14,7 @@
 #include "DanProcessor.h"
 
 
-bool DanProcessor::filterAverage(Image& image, int** mask, int mask_w, int mask_h)
+bool DanProcessor::filterAverage(Image& image, int** mask, int mask_w, int mask_h, bool gray = false)
 {
   // Make sure image isn't null
   if (image.IsNull()) return false;
@@ -95,6 +95,10 @@ bool DanProcessor::filterAverage(Image& image, int** mask, int mask_w, int mask_
       
       // Put new RGB values into image
       image[i][j].SetRGB(sum[0], sum[1], sum[2]);
+      
+      // Convert to grayscale if gray is set
+      if (gray)
+        image[i][j].SetGray(image[i][j]);
     }
   }
   
@@ -412,6 +416,38 @@ bool DanProcessor::Menu_EdgeDetection_Emboss(Image& image)
   
   // Apply filter to image
   result = filterEmboss(image, mask, 3, 3);
+  
+  dealloc2d(mask, 3, 3);
+  
+  return result;
+}
+
+bool DanProcessor::Menu_EdgeDetection_LaplacianEdges(Image& image)
+{
+  // Make sure image isn't null
+  if (image.IsNull()) return false;
+  bool result;
+  
+  // Build filter mask
+  int** mask = alloc2d(3, 3);
+  
+  // Indendation + brackets for visual reasons
+  {
+    mask[0][0] = -1;
+    mask[0][1] = -1;
+    mask[0][2] = -1;
+    
+    mask[1][0] = -1;
+    mask[1][1] = 8;
+    mask[1][2] = -1;
+    
+    mask[2][0] = -1;
+    mask[2][1] = -1;
+    mask[2][2] = -1;
+  }
+  
+  // Apply filter to image
+  result = filterAverage(image, mask, 3, 3, true);
   
   dealloc2d(mask, 3, 3);
   

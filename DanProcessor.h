@@ -33,7 +33,7 @@ class DanProcessor : public QObject
   Q_OBJECT;
   
   private:
-    bool filterAverage(Image& image, int** mask, int mask_w, int mask_h);
+    bool filterAverage(Image& image, int** mask, int mask_w, int mask_h, bool gray);
     bool filterMedian(Image& image, int** mask, int mask_w, int mask_h);
     bool filterEmboss(Image& image, int** mask, int mask_w, int mask_h);
     int** alloc2d(int w, int h);
@@ -44,5 +44,6 @@ class DanProcessor : public QObject
     bool Menu_EdgeDetection_3x3SharpeningFilter(Image& image);
     bool Menu_OS_PlusShapedMedianFilter(Image& image);
     bool Menu_EdgeDetection_Emboss(Image& image);
+    bool Menu_EdgeDetection_LaplacianEdges(Image& image);
 };
 
