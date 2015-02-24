@@ -42,6 +42,9 @@ bool DanProcessor::filterAverage(Image& image, int** mask, int mask_w, int mask_
     for (j = 0; j < mask_w; ++j)
       mask_sum += mask[i][j];
   
+  // Avoid division by 0
+  if (mask_sum < 1) mask_sum = 1;
+  
   // Find center of mask. If mask is even x even, take top-left of center 4
   center_x = mask_w / 2 - (1 - mask_w % 2);
   center_y = mask_h / 2 - (1 - mask_h % 2);
@@ -191,6 +194,74 @@ bool DanProcessor::filterMedian(Image& image, int** mask, int mask_w, int mask_h
   return true;
 }
 
+bool DanProcessor::filterEmboss(Image& image, int** mask, int mask_w, int mask_h)
+{
+  // Make sure image isn't null
+  if (image.IsNull()) return false;
+  
+  // Initialize variables
+  Image copy;                           // Copy of original image
+  int img_w;                            // Overal image width
+  int img_h;                            // Overal image height
+  int sum;                              // Sum of intensities
+  int center_x;                         // Center of mask
+  int center_y;                         // Center of mask
+  int i, j, k, l, x, y;                 // Temporary variables
+  
+  // Copy image due to nature of algorithm
+  copy = image;
+  
+  // Get image dimensions
+  img_w = image.Width();
+  img_h = image.Height();
+  
+  // Find center of mask. If mask is even x even, take top-left of center 4
+  center_x = mask_w / 2 - (1 - mask_w % 2);
+  center_y = mask_h / 2 - (1 - mask_h % 2);
+  
+  // Begin applying mask to image
+  for (i = 0; i < img_h; ++i)           // Loop over rows
+  {
+    for (j = 0; j < img_w; ++j)         // Loop over columns
+    {
+      // Reset variables
+      sum = 0;
+      
+      // Center mask over pixel and take weighted average
+      for (k = 0; k < mask_h; ++k)      // Loop over mask rows
+      {
+        for (l = 0; l < mask_w; ++l)    // Loop over mask columns
+        {
+          // Temporarily store variable of current pixel to sum
+          x = j + (l - center_x);
+          y = i + (k - center_y);
+          
+          // If a pixel would be out of bounds, use nearest valid pixel
+          if (x < 0)      x = 0;
+          if (x >= img_w) x = img_w - 1;
+          if (y < 0)      y = 0;
+          if (y >= img_h) y = img_h - 1;
+          
+          // Add RGB values to sum with weights
+          sum += copy[y][x] * mask[k][l];
+        }
+      }
+      
+      // Add 127 and scale for embossing
+      sum = 127 + (sum / 2);
+           
+      // Clip values should they be invalid
+      if (sum < 0)     sum = 0;
+      if (sum >= 256)  sum = 256-1; // Why not 255? to match lines 69-72
+      
+      // Put new RGB values into image
+      image[i][j].SetGray(sum);
+    }
+  }
+  
+  return true;
+}
+
 int** DanProcessor::alloc2d(int w, int h)
 {
   int** array;
@@ -309,6 +380,38 @@ bool DanProcessor::Menu_OS_PlusShapedMedianFilter(Image& image)
   
   // Apply filter to image
   result = filterMedian(image, mask, 3, 3);
+  
+  dealloc2d(mask, 3, 3);
+  
+  return result;
+}
+
+bool DanProcessor::Menu_EdgeDetection_Emboss(Image& image)
+{
+  // Make sure image isn't null
+  if (image.IsNull()) return false;
+  bool result;
+  
+  // Build filter mask
+  int** mask = alloc2d(3, 3);
+  
+  // Indendation + brackets for visual reasons
+  {
+    mask[0][0] = 1;
+    mask[0][1] = 0;
+    mask[0][2] = 0;
+    
+    mask[1][0] = 0;
+    mask[1][1] = 0;
+    mask[1][2] = 0;
+    
+    mask[2][0] = 0;
+    mask[2][1] = 0;
+    mask[2][2] = -1;
+  }
+  
+  // Apply filter to image
+  result = filterEmboss(image, mask, 3, 3);
   
   dealloc2d(mask, 3, 3);
   
