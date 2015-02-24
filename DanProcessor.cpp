@@ -246,7 +246,7 @@ bool DanProcessor::filterEmboss(Image& image, int** mask, int mask_w, int mask_h
           if (y < 0)      y = 0;
           if (y >= img_h) y = img_h - 1;
           
-          // Add RGB values to sum with weights
+          // Add intensity values to sum with weights
           sum += copy[y][x] * mask[k][l];
         }
       }
@@ -260,6 +260,94 @@ bool DanProcessor::filterEmboss(Image& image, int** mask, int mask_w, int mask_h
       
       // Put new RGB values into image
       image[i][j].SetGray(sum);
+    }
+  }
+  
+  return true;
+}
+
+bool DanProcessor::sobel(Image& image, bool mag)
+{
+  // Make sure image isn't null
+  if (image.IsNull()) return false;
+  
+  // Initialize variables
+  Image copy;                           // Copy of original image
+  int img_w;                            // Overal image width
+  int img_h;                            // Overal image height
+  int sum[2];                           // Sum of intensities
+  int center_x;                         // Center of mask
+  int center_y;                         // Center of mask
+  int i, j, k, l, x, y;                 // Temporary variables
+  int mask1[3][3] = {
+    {-1, 0, +1},
+    {-2, 0, +2},
+    {-1, 0, +1}
+  };
+  int mask2[3][3] = {
+    {-1, -2, -1},
+    {0, 0, 0},
+    {+1, +2, +1}
+  };
+  int mask_w = 3;
+  int mask_h = 3;
+  
+  // Copy image due to nature of algorithm
+  copy = image;
+  
+  // Get image dimensions
+  img_w = image.Width();
+  img_h = image.Height();
+  
+  // Find center of mask
+  center_x = 1;
+  center_y = 1;
+  
+  // Begin applying mask to image
+  for (i = 0; i < img_h; ++i)           // Loop over rows
+  {
+    for (j = 0; j < img_w; ++j)         // Loop over columns
+    {
+      // Reset variables
+      sum[0] = 0;
+      sum[1] = 0;
+      
+      // Center mask over pixel and take weighted average
+      for (k = 0; k < mask_h; ++k)      // Loop over mask rows
+      {
+        for (l = 0; l < mask_w; ++l)    // Loop over mask columns
+        {
+          // Temporarily store variable of current pixel to sum
+          x = j + (l - center_x);
+          y = i + (k - center_y);
+          
+          // If a pixel would be out of bounds, use nearest valid pixel
+          if (x < 0)      x = 0;
+          if (x >= img_w) x = img_w - 1;
+          if (y < 0)      y = 0;
+          if (y >= img_h) y = img_h - 1;
+          
+          // Add intensity values to sum with weights
+          sum[0] += copy[y][x] * mask1[k][l];
+          sum[1] += copy[y][x] * mask2[k][l];
+        }
+      }
+      
+      // Now we use sum[0] for our value
+      
+      // Calculate direction or magnitude
+      if (mag)
+        sum[0] = sqrt((double) (sum[0] * sum[0]) + (double) (sum[1] * sum[1]));
+      else {
+        sum[0] = (int) ((180 + (atan2((double) sum[1], (double) sum[0]) * 180.0 / M_PI)) * 256.0 / 360.0);
+      }
+      
+      // Clip values should they be invalid
+      if (sum[0] < 0)     sum[0] = 0;
+      if (sum[0] >= 256)  sum[0] = 256-1; // Why not 255? to match lines 69-72
+      
+      // Put new RGB values into image
+      image[i][j].SetGray(sum[0]);
     }
   }
   
@@ -450,6 +538,26 @@ bool DanProcessor::Menu_EdgeDetection_LaplacianEdges(Image& image)
   result = filterAverage(image, mask, 3, 3, true);
   
   dealloc2d(mask, 3, 3);
+  
+  return result;
+}
+
+bool DanProcessor::Menu_EdgeDetection_SobelEdgeMagnitudes(Image& image)
+{
+  if (image.IsNull()) return false;
+  bool result;
+  
+  result = sobel(image, true);
+  
+  return result;
+}
+
+bool DanProcessor::Menu_EdgeDetection_SobelEdgeDirections(Image& image)
+{
+  if (image.IsNull()) return false;
+  bool result;
+  
+  result = sobel(image, false);
   
   return result;
 }

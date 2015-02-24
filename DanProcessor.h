@@ -10,10 +10,13 @@
  ******************************************************************************/
 
 #pragma once
+
+#define _USE_MATH_DEFINES
 #include <qtimagelib.h>
 #include <iostream>
 #include <vector>
 #include <algorithm>
+#include <cmath>
 
 using namespace std;
 
@@ -36,6 +39,7 @@ class DanProcessor : public QObject
     bool filterAverage(Image& image, int** mask, int mask_w, int mask_h, bool gray);
     bool filterMedian(Image& image, int** mask, int mask_w, int mask_h);
     bool filterEmboss(Image& image, int** mask, int mask_w, int mask_h);
+    bool sobel(Image& image, bool mag);
     int** alloc2d(int w, int h);
     void  dealloc2d(int** array, int w, int h);
   
@@ -45,5 +49,7 @@ class DanProcessor : public QObject
     bool Menu_OS_PlusShapedMedianFilter(Image& image);
     bool Menu_EdgeDetection_Emboss(Image& image);
     bool Menu_EdgeDetection_LaplacianEdges(Image& image);
+    bool Menu_EdgeDetection_SobelEdgeMagnitudes(Image& image);
+    bool Menu_EdgeDetection_SobelEdgeDirections(Image& image);
 };
 
