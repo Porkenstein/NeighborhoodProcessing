@@ -10,7 +10,15 @@
  ******************************************************************************/
 
 #pragma once
+
+#define _USE_MATH_DEFINES
 #include <qtimagelib.h>
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <cmath>
+
+using namespace std;
 
 /***************************************************************************//**
  * DerekPreprocessor
@@ -29,16 +37,24 @@ class DerekProcessor : public QObject
   Q_OBJECT;
 
   public slots:
-    bool Menu_DerekFunctions_ApplyGamma(Image& image);
     bool Menu_DerekFunctions_MinMaxStandardDeviationEdgeDetection(Image& image);
-    bool Menu_DerekFunctions_NoiseCleanFilter(Image& image);
-    bool Menu_DerekFunctions_MeanFilter(Image& image);
-    bool Menu_DerekFunctions_KirschEdgeDetection(Image& image);
-    bool Menu_DerekFunctions_MedianFilter(Image& image);
-    bool Menu_DerekFunctions_KirschEdgeMagnitude(Image& image);
-    bool Menu_DerekFunctions_MinimumFilter(Image& image);
-    bool Menu_DerekFunctions_StandardDeviationEdgeDetection(Image& image);
-    bool Menu_DerekFunctions_MaximumFilter(Image& image);
-    bool Menu_DerekFunctions_RangeFilter(Image& image);
+    bool Menu_NoiseTools_NoiseCleanFilter(Image& image);
+    bool Menu_RankOrderFilters_MeanFilter(Image& image);
+    bool Menu_EdgeDetection_KirschEdgeDetection(Image& image);
+    bool Menu_RankOrderFilters_MedianFilter(Image& image);
+    bool Menu_EdgeDetection_KirschEdgeMagnitude(Image& image);
+    bool Menu_RankOrderFilters_MinimumFilter(Image& image);
+    bool Menu_EdgeDetection_StandardDeviationEdgeDetection(Image& image);
+    bool Menu_RankOrderFilters_MaximumFilter(Image& image);
+    bool Menu_EdgeDetection_RangeFilter(Image& image);
+
+ public:
+    enum  operation {Min, Max, Mean, Median, Range, StandardDeviation, NoiseClean};
+
+private:
+  int** alloc2d(int w, int h);
+  void dealloc2d(int** array, int h);
+  bool filterStatistic(Image& image, operation operation);
+  bool filterStatisticGreyscale(Image& image, operation operation);
 };
 

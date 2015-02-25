@@ -322,7 +322,7 @@ bool PointProcessor::Menu_PointProcesses_ModifiedContrastStretch(Image& image)
  * Returns
  *          true if successful, false if not
  ******************************************************************************/
-bool PointProcessor::Menu_ImageLibFunctions_ViewImageHistogram(Image &image)
+bool PointProcessor::Menu_PointProcesses_ViewImageHistogram(Image &image)
 {
     displayHistogram(image.Histogram(), "Image Histogram");
     return true;

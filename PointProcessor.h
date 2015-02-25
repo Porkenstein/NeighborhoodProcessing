@@ -36,7 +36,7 @@ class PointProcessor : public QObject
     bool Menu_PointProcesses_EqualizeWithClipping(Image& image);
     bool Menu_PointProcesses_AutoContrastStretch(Image& image);
     bool Menu_PointProcesses_ModifiedContrastStretch(Image& image);
-    bool Menu_ImageLibFunctions_ViewImageHistogram(Image &image);
+    bool Menu_PointProcesses_ViewImageHistogram(Image &image);
 
 };
 
