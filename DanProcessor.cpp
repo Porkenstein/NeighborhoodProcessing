@@ -339,7 +339,8 @@ bool DanProcessor::sobel(Image& image, bool mag)
       if (mag)
         sum[0] = sqrt((double) (sum[0] * sum[0]) + (double) (sum[1] * sum[1]));
       else {
-        sum[0] = (int) ((180 + (atan2((double) sum[1], (double) sum[0]) * 180.0 / M_PI)) * 256.0 / 360.0);
+        sum[0] = (int) (((atan2((double) -sum[1], (double) sum[0]) * 255) / M_PI) / 2);
+        if (sum[0] < 0) sum[0] += 255;
       }
       
       // Clip values should they be invalid
