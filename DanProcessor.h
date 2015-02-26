@@ -40,6 +40,7 @@ class DanProcessor : public QObject
     bool filterMedian(Image& image, int** mask, int mask_w, int mask_h);
     bool filterEmboss(Image& image, int** mask, int mask_w, int mask_h);
     bool sobel(Image& image, bool mag);
+    bool kirschDir(Image& image);
     int** alloc2d(int w, int h);
     void  dealloc2d(int** array, int w, int h);
   
@@ -51,5 +52,6 @@ class DanProcessor : public QObject
     bool Menu_EdgeDetection_LaplacianEdges(Image& image);
     bool Menu_EdgeDetection_SobelEdgeMagnitudes(Image& image);
     bool Menu_EdgeDetection_SobelEdgeDirections(Image& image);
+    bool Menu_EdgeDetection_KirschEdgeDirections(Image& image);
 };
 
