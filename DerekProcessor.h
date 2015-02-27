@@ -9,16 +9,7 @@
  *
  ******************************************************************************/
 
-#pragma once
-
-#define _USE_MATH_DEFINES
-#include <qtimagelib.h>
-#include <iostream>
-#include <vector>
-#include <algorithm>
-#include <cmath>
-
-using namespace std;
+#include "toolbox.h"
 
 /***************************************************************************//**
  * DerekPreprocessor
@@ -38,12 +29,8 @@ class DerekProcessor : public QObject
 
   public slots:
     bool Menu_NoiseTools_NoiseCleanFilter(Image& image);
-    bool Menu_RankOrderFilters_MeanFilter(Image& image);
-    bool Menu_RankOrderFilters_MedianFilter(Image& image);
     bool Menu_EdgeDetection_KirschEdgeMagnitude(Image& image);
-    bool Menu_RankOrderFilters_MinimumFilter(Image& image);
     bool Menu_EdgeDetection_StandardDeviationEdgeDetection(Image& image);
-    bool Menu_RankOrderFilters_MaximumFilter(Image& image);
     bool Menu_EdgeDetection_RangeFilter(Image& image);
 
  public:

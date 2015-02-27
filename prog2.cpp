@@ -45,8 +45,8 @@ Details - The purpose of this assignment was to implement most of the point
  *****************************************************************/
 
 #include <qtimagelib.h>
-#include "DanProcessor.h"
-#include "DerekProcessor.h"
+#include "RankOrderFilterMenu.h"
+#include "NoiseToolMenu.h"
 #include "PointProcessor.h"
 
 /***************************************************************************//**
@@ -64,13 +64,14 @@ Details - The purpose of this assignment was to implement most of the point
  ******************************************************************************/
 int main(int argc, char** argv)
 {
-  DanProcessor dan;
-  DerekProcessor derek;
+  NoiseToolMenu ntm;
+  RankOrderFilterMenu rofm;
   PointProcessor ilp;
+
   ImageApp app(argc, argv);
 
-  app.AddActions(&dan);
-  app.AddActions(&derek);
+  app.AddActions(&ntm);
+  app.AddActions(&rofm);
   app.AddActions(&ilp);
   return app.Start();
 }

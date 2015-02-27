@@ -1,5 +1,5 @@
 /***************************************************************************//**
- * DerekProcessor.h
+ * NoiseToolMenu.h
  *
  * Author - Derek Stotz
  *
@@ -9,16 +9,7 @@
  *
  ******************************************************************************/
 
-#pragma once
-
-#define _USE_MATH_DEFINES
-#include <qtimagelib.h>
-#include <iostream>
-#include <vector>
-#include <algorithm>
-#include <cmath>
-
-using namespace std;
+#include "toolbox.h"
 
 /***************************************************************************//**
  * NoiseToolMenu
