@@ -11,12 +11,7 @@
 
 #pragma once
 
-#define _USE_MATH_DEFINES
-#include <qtimagelib.h>
-#include <iostream>
-#include <vector>
-#include <algorithm>
-#include <cmath>
+#include "toolbox.h"
 
 using namespace std;
 
@@ -33,15 +28,6 @@ using namespace std;
 class DanProcessor : public QObject
 {
   Q_OBJECT;
-  
-  private:
-    bool filterAverage(Image& image, int** mask, int mask_w, int mask_h, bool gray);
-    bool filterMedian(Image& image, int** mask, int mask_w, int mask_h);
-    bool filterEmboss(Image& image, int** mask, int mask_w, int mask_h);
-    bool sobel(Image& image, bool mag);
-    bool kirschDir(Image& image);
-    int** alloc2d(int w, int h);
-    void  dealloc2d(int** array, int w, int h);
   
   public slots:
     bool Menu_Smoothing_3x3SmoothingFilter(Image& image);
