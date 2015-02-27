@@ -48,6 +48,7 @@ Details - The purpose of this assignment was to implement most of the point
 #include "RankOrderFilterMenu.h"
 #include "NoiseToolMenu.h"
 #include "PointProcessor.h"
+#include "EdgeDetectionMenu.cpp"
 
 /***************************************************************************//**
  * main
@@ -67,12 +68,14 @@ int main(int argc, char** argv)
   NoiseToolMenu ntm;
   RankOrderFilterMenu rofm;
   PointProcessor ilp;
+  EdgeDetectionMenu edm;
 
   ImageApp app(argc, argv);
 
   app.AddActions(&ntm);
   app.AddActions(&rofm);
   app.AddActions(&ilp);
+  app.AddActions(&edm);
   return app.Start();
 }
 

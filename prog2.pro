@@ -1,11 +1,11 @@
-HEADERS += DanProcessor.h DerekProcessor.h \
+HEADERS += \
     PointProcessor.h \
     NoiseToolMenu.h \
     RankOrderFilterMenu.h \
     toolbox.h \
     EdgeDetectionMenu.h \
     SmoothingMenu.h
-SOURCES += prog2.cpp DanProcessor.cpp DerekProcessor.cpp \
+SOURCES += prog2.cpp \
     PointProcessor.cpp \
     NoiseToolMenu.cpp \
     RankOrderFilterMenu.cpp \
