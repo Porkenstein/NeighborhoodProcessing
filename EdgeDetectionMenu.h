@@ -33,6 +33,9 @@ class EdgeDetectionMenu : public QObject
     bool Menu_EdgeDetection_Laplacian(Image& image);
     bool Menu_EdgeDetection_SobelMagnitude(Image& image);
     bool Menu_EdgeDetection_SobelDirection(Image& image);
+    bool Menu_EdgeDetection_KirschMagnitude(Image& image);
     bool Menu_EdgeDetection_KirschDirection(Image& image);
+    bool Menu_EdgeDetection_StandardDeviation(Image& image);
+    bool Menu_EdgeDetection_RangeFilter(Image& image);
 };
 
