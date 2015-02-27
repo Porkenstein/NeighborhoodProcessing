@@ -22,7 +22,7 @@
  * prog2.  The noise generation is done with built-in imagelib functions, and the
  * noise removal is done through a rank order filter.
  ******************************************************************************/
-class DerekProcessor : public QObject
+class NoiseToolMenu : public QObject
 {
   Q_OBJECT;
 

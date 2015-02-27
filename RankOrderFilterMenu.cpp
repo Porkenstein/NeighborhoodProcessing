@@ -14,7 +14,7 @@
  * Returns
  *          true if successful, false if not
  ******************************************************************************/
-bool DerekProcessor::Menu_RankOrderFilters_MeanFilter(Image& image)
+bool RankOrderFilterMenu::Menu_RankOrderFilters_MeanFilter(Image& image)
 {
   return this->filterStatistic(image, Mean);
 }
@@ -33,7 +33,7 @@ bool DerekProcessor::Menu_RankOrderFilters_MeanFilter(Image& image)
  * Returns
  *          true if successful, false if not
  ******************************************************************************/
-bool DerekProcessor::Menu_RankOrderFilters_MedianFilter(Image& image)
+bool RankOrderFilterMenu::Menu_RankOrderFilters_MedianFilter(Image& image)
 {
   return this->filterStatistic(image, Median);
 }
@@ -52,7 +52,7 @@ bool DerekProcessor::Menu_RankOrderFilters_MedianFilter(Image& image)
  * Returns
  *          true if successful, false if not
  ******************************************************************************/
-bool DerekProcessor::Menu_RankOrderFilters_MinimumFilter(Image& image)
+bool RankOrderFilterMenu::Menu_RankOrderFilters_MinimumFilter(Image& image)
 {
   return this->filterStatistic(image, Min);
 }
@@ -70,7 +70,7 @@ bool DerekProcessor::Menu_RankOrderFilters_MinimumFilter(Image& image)
  * Returns
  *          true if successful, false if not
  ******************************************************************************/
-bool DerekProcessor::Menu_RankOrderFilters_MaximumFilter(Image& image)
+bool RankOrderFilterMenu::Menu_RankOrderFilters_MaximumFilter(Image& image)
 {
   return this->filterStatistic(image, Max);
 }
@@ -88,7 +88,7 @@ bool DerekProcessor::Menu_RankOrderFilters_MaximumFilter(Image& image)
  * Returns
  *          true if successful, false if not
  ******************************************************************************/
-bool DanProcessor::Menu_RankOrderFilters_PlusShapedMedianFilter(Image& image)
+bool RankOrderFilterMenu::Menu_RankOrderFilters_PlusShapedMedianFilter(Image& image)
 {
   // Make sure image isn't null
   if (image.IsNull()) return false;

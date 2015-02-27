@@ -10,7 +10,7 @@
  ******************************************************************************/
 
 #pragma once
-#include <qtimagelib.h>
+#include "toolbox.h"
 
 /***************************************************************************//**
  * PointProcessor
@@ -37,7 +37,5 @@ class PointProcessor : public QObject
     bool Menu_PointProcesses_AutoContrastStretch(Image& image);
     bool Menu_PointProcesses_ModifiedContrastStretch(Image& image);
     bool Menu_PointProcesses_ViewImageHistogram(Image &image);
-    bool Menu_NoiseTools_AddGaussianNoise(Image &image);
-    bool Menu_NoiseTools_AddImpulseNoise(Image &image);
 };
 

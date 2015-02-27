@@ -1,34 +1,31 @@
 /***************************************************************************//**
- * DanProcessor.h
+ * SmoothingMenu.h
  *
- * Author - Dan Andrus
+ * Author - Derek Stotz
  *
- * Date - February 25, 2015
+ * Date - February 26, 2015
  *
- * Details - Contains the declaration for the DanProcessor class.
+ * Details - Contains the declaration for the SmoothingMenu class
  *
  ******************************************************************************/
-
-#pragma once
 
 #include "toolbox.h"
 
 /***************************************************************************//**
- * DanProcessor
+ * RankOrderFilterMenu
  *
- * Author - DanAndrus
+ * Author - Derek Stotz
  *
  * Child of QObject class.
  *
- * Declares various neighborhood processes that can be applied to images using
- * QT.
+ * Declares one smoothing function, could be extended to include Gaussian smoothing
+ * for extra credit.
  ******************************************************************************/
-class DanProcessor : public QObject
+class RankOrderFilterMenu : public QObject
 {
   Q_OBJECT;
-  
+
   public slots:
     bool Menu_Smoothing_3x3SmoothingFilter(Image& image);
-    bool Menu_RankOrderFilters_PlusShapedMedianFilter(Image& image);
-};
 
+};
