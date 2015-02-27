@@ -10,6 +10,7 @@ SOURCES += prog2.cpp \
     NoiseToolMenu.cpp \
     RankOrderFilterMenu.cpp \
     toolbox.cpp \
-    EdgeDetectionMenu.cpp
+    EdgeDetectionMenu.cpp \
+    SmoothingMenu.cpp
 CONFIG += qtimagelib
 

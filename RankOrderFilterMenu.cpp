@@ -16,7 +16,7 @@
  ******************************************************************************/
 bool RankOrderFilterMenu::Menu_RankOrderFilters_MeanFilter(Image& image)
 {
-  return this->filterStatistic(image, Mean);
+  return filterStatistic(image, Mean);
 }
 
 /***************************************************************************//**
@@ -35,7 +35,7 @@ bool RankOrderFilterMenu::Menu_RankOrderFilters_MeanFilter(Image& image)
  ******************************************************************************/
 bool RankOrderFilterMenu::Menu_RankOrderFilters_MedianFilter(Image& image)
 {
-  return this->filterStatistic(image, Median);
+  return filterStatistic(image, Median);
 }
 
 
@@ -54,7 +54,7 @@ bool RankOrderFilterMenu::Menu_RankOrderFilters_MedianFilter(Image& image)
  ******************************************************************************/
 bool RankOrderFilterMenu::Menu_RankOrderFilters_MinimumFilter(Image& image)
 {
-  return this->filterStatistic(image, Min);
+  return filterStatistic(image, Min);
 }
 
 /***************************************************************************//**
@@ -72,7 +72,7 @@ bool RankOrderFilterMenu::Menu_RankOrderFilters_MinimumFilter(Image& image)
  ******************************************************************************/
 bool RankOrderFilterMenu::Menu_RankOrderFilters_MaximumFilter(Image& image)
 {
-  return this->filterStatistic(image, Max);
+  return filterStatistic(image, Max);
 }
 
 /***************************************************************************//**
@@ -115,7 +115,7 @@ bool RankOrderFilterMenu::Menu_RankOrderFilters_PlusShapedMedianFilter(Image& im
   // Apply filter to image
   result = filterMedian(image, mask, 3, 3);
 
-  dealloc2d(mask, 3, 3);
+  dealloc2d(mask, 3);
 
   return result;
 }

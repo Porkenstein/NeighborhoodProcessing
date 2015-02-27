@@ -24,7 +24,7 @@
  ******************************************************************************/
 class NoiseToolMenu : public QObject
 {
-  Q_OBJECT;
+  Q_OBJECT
 
   public slots:
     bool Menu_NoiseTools_NoiseCleanFilter(Image& image);

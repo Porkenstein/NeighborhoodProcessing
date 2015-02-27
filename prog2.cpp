@@ -10,45 +10,58 @@ Meeting Time & Place: 9:00 am M-W-F in McLaury 305
 
 Authors: Derek Stotz, Dan Andrus (QtImageLib by Dr. John Weiss)
 
-Last Modified: Feb 6, 2015
+Last Modified: Feb 26, 2015
 
 Compiling: Run qmake to build make file, then run make to compile program.
 
 Usage:   ./prog2
 
-Details - The purpose of this assignment was to implement most of the point
+Details - The purpose of this assignment was to implement most of the neighborhood
  *         processess described in class.  While the GUI elements were provided
  *         by Qt and QtImageLib, the only code we had to implement was for
  *         modifying the images themselves.  Each function of ours was passed
  *         a QtImageLib image, which acted as a 2 dimensional array of pixel
- *         information.  We were able to either generate and analyze the image
- *         histogram to modify the intensity distributions or simply modify each
- *         individual pixel value to implement the point proccesses required.
+ *         information.  We were able to push the images through filters and masks
+ *         to complte our neighborhood processes (this was done largely through
+ *         brute force.)
+ *
+ *         Our rank order processes had specificable filter sizes and used an enum
+ *         and a switch statement for code reuse.  The traversal through the image
+ *         was done in one function, and a switch statement in the nested loop
+ *         determined which filter was applied to each pixel neighborhood.
+ *
+ *         The masks used for edge detection were created and handled largeley the
+ *         same, but the unique nature of each edge detection process required us to
+ *         have a different function for each edge operator type (one for sobel, one
+ *         for kirsch, etc).  However, the distinction between setting the new image
+ *         intensities to values corresponding to edge magnitudes and setting
+ *         the new image intensities to values corresponding to edge directions was
+ *         done in the sobel and kirsch functions.
 
- *         We split our work roughly in half.  Dan's processes are under a different
- *         Menu than Derek's, and the ImageLib functions which we used for reference
- *         remain under and Image Lib menu.
+ *         We split our work roughly in half, as before.   Derek did most of the
+ *         Rank order filters, while Dan did most of the Edge detection.  The
+ *         rest of the work was done together.  Extensive refactoring was done near
+ *         the end to improve the coding style.
 
 
  Recommended Usage -
  *           Simply open an image using the open icon and modify it using the functions
- *           found under the two menus.  To reset the image, press the back arrow in the
+ *           found under the menus.  To reset the image, press the back arrow in the
  *           image window.
 
- Issues and Bugs - Our histogram equalization gives slightly (barely detectably) different
- *           results from the ImageLib equalization.  Actually, in some cases of clipping
- *           values between 0 and 1, our equalization worked correctly while the ImageLib
- *           equalization only gave partially equalized results.
- *
- *           Some processes are not included in the ImageLibProcessor, but this was not
- *           required and we were merely using it for reference.
+ Issues and Bugs - None to speak of.  The filters are not terribly optimized, and may
+            be slow when applied to larger images.
+
+            One coding style issue which still remains is the inclusion of "EdgeDetectionMenu.cpp"
+            rather than "EdgeDetectionMenu.h" in prog2.cpp.  This is due to a qt error which
+            we could not resolve which popped up when including the latter instead of the former.
  *****************************************************************/
 
-#include <qtimagelib.h>
 #include "RankOrderFilterMenu.h"
 #include "NoiseToolMenu.h"
 #include "PointProcessor.h"
 #include "EdgeDetectionMenu.cpp"
+#include "SmoothingMenu.h"
 
 /***************************************************************************//**
  * main
@@ -69,13 +82,15 @@ int main(int argc, char** argv)
   RankOrderFilterMenu rofm;
   PointProcessor ilp;
   EdgeDetectionMenu edm;
+  SmoothingMenu sm;
 
   ImageApp app(argc, argv);
 
   app.AddActions(&ntm);
   app.AddActions(&rofm);
   app.AddActions(&ilp);
-  app.AddActions(&edm);
+  app.AddActions(&edm);\
+  app.AddActions(&sm);
   return app.Start();
 }
 

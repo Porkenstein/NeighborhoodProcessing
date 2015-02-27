@@ -51,7 +51,7 @@ bool EdgeDetectionMenu::Menu_EdgeDetection_3x3SharpeningFilter(Image& image)
   // Apply filter to image
   result = filterAverage(image, mask, 3, 3);
   
-  dealloc2d(mask, 3, 3);
+  dealloc2d(mask, 3);
   
   return result;
 }
@@ -95,7 +95,7 @@ bool EdgeDetectionMenu::Menu_EdgeDetection_Emboss(Image& image)
   // Apply filter to image
   result = filterEmboss(image, mask, 3, 3);
   
-  dealloc2d(mask, 3, 3);
+  dealloc2d(mask, 3);
   
   return result;
 }
@@ -139,13 +139,13 @@ bool EdgeDetectionMenu::Menu_EdgeDetection_Laplacian(Image& image)
   // Apply filter to image
   result = filterAverage(image, mask, 3, 3, true);
   
-  dealloc2d(mask, 3, 3);
+  dealloc2d(mask, 3);
   
   return result;
 }
 
 /***************************************************************************//**
- * Menu_EdgeDetection_SobelMagnitudes
+ * Menu_EdgeDetection_SobelMagnitude
  * Author - Dan Andrus
  *
  * Highlights edges using Sobel edge detection masks
@@ -156,18 +156,18 @@ bool EdgeDetectionMenu::Menu_EdgeDetection_Laplacian(Image& image)
  * Returns
  *          true if successful, false if not
  ******************************************************************************/
-bool EdgeDetectionMenu::Menu_EdgeDetection_SobelMagnitudes(Image& image)
+bool EdgeDetectionMenu::Menu_EdgeDetection_SobelMagnitude(Image& image)
 {
   if (image.IsNull()) return false;
   bool result;
   
-  result = sobel(image, true);
+  result = this->sobel(image, true);
   
   return result;
 }
 
 /***************************************************************************//**
- * Menu_EdgeDetection_SobelDirections
+ * Menu_EdgeDetection_SobelDirection
  * Author - Dan Andrus
  *
  * Illustrates edge directions using Sobel edge detection masks.
@@ -178,7 +178,7 @@ bool EdgeDetectionMenu::Menu_EdgeDetection_SobelMagnitudes(Image& image)
  * Returns
  *          true if successful, false if not
  ******************************************************************************/
-bool EdgeDetectionMenu::Menu_EdgeDetection_SobelDirections(Image& image)
+bool EdgeDetectionMenu::Menu_EdgeDetection_SobelDirection(Image& image)
 {
   if (image.IsNull()) return false;
   bool result;
@@ -211,7 +211,7 @@ bool EdgeDetectionMenu::Menu_EdgeDetection_KirschMagnitude(Image& image)
 }
 
 /***************************************************************************//**
- * Menu_EdgeDetection_KirschDirections
+ * Menu_EdgeDetection_KirschDirection
  * Author - Dan Andrus
  *
  * Illustrates edge directions using the Kirsch compass edge detection masks.
@@ -222,7 +222,7 @@ bool EdgeDetectionMenu::Menu_EdgeDetection_KirschMagnitude(Image& image)
  * Returns
  *          true if successful, false if not
  ******************************************************************************/
-bool EdgeDetectionMenu::Menu_EdgeDetection_KirschDirections(Image& image)
+bool EdgeDetectionMenu::Menu_EdgeDetection_KirschDirection(Image& image)
 {
   if (image.IsNull()) return false;
   bool result;
@@ -247,7 +247,7 @@ bool EdgeDetectionMenu::Menu_EdgeDetection_KirschDirections(Image& image)
  ******************************************************************************/
 bool EdgeDetectionMenu::Menu_EdgeDetection_StandardDeviation(Image& image)
 {
-  return this->filterStatisticGreyscale(image, StandardDeviation);
+  return filterStatisticGreyscale(image, StandardDeviation);
 }
 
 /***************************************************************************//**
@@ -265,7 +265,7 @@ bool EdgeDetectionMenu::Menu_EdgeDetection_StandardDeviation(Image& image)
  ******************************************************************************/
 bool EdgeDetectionMenu::Menu_EdgeDetection_RangeFilter(Image& image)
 {
-  return this->filterStatisticGreyscale(image, Range);
+  return filterStatisticGreyscale(image, Range);
 }
 
 /***************************************************************************//**
@@ -282,7 +282,7 @@ bool EdgeDetectionMenu::Menu_EdgeDetection_RangeFilter(Image& image)
  * Returns
  *          True if the operation was successful, false if not
  ******************************************************************************/
-bool sobel(Image& image, bool mag)
+bool EdgeDetectionMenu::sobel(Image& image, bool mag)
 {
   // Make sure image isn't null
   if (image.IsNull()) return false;
@@ -385,7 +385,7 @@ bool sobel(Image& image, bool mag)
  * Returns
  *          True if the operation was successful, false if not
  ******************************************************************************/
-bool kirsch(Image &image, bool mag)
+bool EdgeDetectionMenu::kirsch(Image &image, bool mag)
 {
   // Make sure image isn't null
   if (image.IsNull()) return false;
@@ -494,7 +494,7 @@ bool kirsch(Image &image, bool mag)
       // Put new intensity into image
       if (mag)
       {
-        image[i][j].SetGray(max(0, min(255, max)));
+        image[i][j].SetGray(std::max(0, min(255, max)));
       }
       else
       {

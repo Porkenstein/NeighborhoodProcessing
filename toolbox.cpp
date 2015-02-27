@@ -330,7 +330,7 @@ int** alloc2d(int w, int h)
  *          w - number of columns in the array
  *          h - number of rows in the array
  ******************************************************************************/
-void dealloc2d(int** array, int w, int h)
+void dealloc2d(int** array, int h)
 {
   for (int i = 0; i < h; i++)
     delete [] array[i];
@@ -351,7 +351,7 @@ void dealloc2d(int** array, int w, int h)
  *          mask_w - the mask width (and height)
  *          op - the operation (Min, Max, Median, or Mean)
  ******************************************************************************/
-bool DerekProcessor::filterStatistic(Image& image, operation op)
+bool filterStatistic(Image& image, operation op)
 {
   // Make sure image isn't null
   if (image.IsNull()) return false;
@@ -363,7 +363,7 @@ bool DerekProcessor::filterStatistic(Image& image, operation op)
   int mask_w = 3;                       // The width of the filter
   int val[3];                           // New values of all colors
   int center;                           // Center of mask (x and y are the same in any case)
-  uint i, j, k, l, x, y, m;             // Temporary variables
+  int i, j, k, l, x, y, m;             // Temporary variables
   int threshold = 0;                        // Threshold for noise removal
   int sum[3] = {0};
 
@@ -454,7 +454,7 @@ bool DerekProcessor::filterStatistic(Image& image, operation op)
           sum[1] = 0;
           sum[2] = 0; // the sum of the three colors
 
-          for( m = 0; m < red_list.size(); m++)
+          for( m = 0; m < (int)red_list.size(); m++)
           {
               sum[0] += red_list[m];
               sum[1] += gre_list[m];
@@ -504,7 +504,7 @@ bool DerekProcessor::filterStatistic(Image& image, operation op)
           sum[1] = 0;
           sum[2] = 0; // the sum of the three colors
 
-          for( m = 0; m < red_list.size(); m++)
+          for( m = 0; m < (int)red_list.size(); m++)
           {
               sum[0] += red_list[m];
               sum[1] += gre_list[m];
@@ -542,7 +542,7 @@ bool DerekProcessor::filterStatistic(Image& image, operation op)
  *          image - the image to filter
  *          op - the operation (either standard deviation or range)
  ******************************************************************************/
-bool DerekProcessor::filterStatisticGreyscale(Image& image, operation op)
+bool filterStatisticGreyscale(Image& image, operation op)
 {
   // Make sure image isn't null
   if (image.IsNull()) return false;
@@ -612,13 +612,13 @@ bool DerekProcessor::filterStatisticGreyscale(Image& image, operation op)
 
           // start by finding the mean
           avg = 0;
-          for( m = 0; m < list.size(); m++)
+          for( m = 0; m < (int)list.size(); m++)
               avg += list[m];
           avg = avg / list.size();
 
           // then find each square deviation and add them together
           temp = 0;
-          for ( m = 0; m < list.size(); m++)
+          for ( m = 0; m < (int)list.size(); m++)
                temp += pow(list[m] - avg, 2);
 
           // use the sum of the squared deviations to find the stdev

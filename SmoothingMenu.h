@@ -12,7 +12,7 @@
 #include "toolbox.h"
 
 /***************************************************************************//**
- * RankOrderFilterMenu
+ * SmoothingMenu
  *
  * Author - Derek Stotz
  *
@@ -21,9 +21,9 @@
  * Declares one smoothing function, could be extended to include Gaussian smoothing
  * for extra credit.
  ******************************************************************************/
-class RankOrderFilterMenu : public QObject
+class SmoothingMenu : public QObject
 {
-  Q_OBJECT;
+  Q_OBJECT
 
   public slots:
     bool Menu_Smoothing_3x3SmoothingFilter(Image& image);

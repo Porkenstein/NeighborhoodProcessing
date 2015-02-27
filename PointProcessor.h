@@ -27,7 +27,7 @@
 
 class PointProcessor : public QObject
 {
-  Q_OBJECT;
+  Q_OBJECT
 
   public slots:
     bool Menu_PointProcesses_ConvertToGreyscale(Image& image);
