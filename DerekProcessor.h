@@ -37,10 +37,8 @@ class DerekProcessor : public QObject
   Q_OBJECT;
 
   public slots:
-    bool Menu_DerekFunctions_MinMaxStandardDeviationEdgeDetection(Image& image);
     bool Menu_NoiseTools_NoiseCleanFilter(Image& image);
     bool Menu_RankOrderFilters_MeanFilter(Image& image);
-    bool Menu_EdgeDetection_KirschEdgeDetection(Image& image);
     bool Menu_RankOrderFilters_MedianFilter(Image& image);
     bool Menu_EdgeDetection_KirschEdgeMagnitude(Image& image);
     bool Menu_RankOrderFilters_MinimumFilter(Image& image);

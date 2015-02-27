@@ -561,7 +561,7 @@ bool DanProcessor::Menu_EdgeDetection_3x3SharpeningFilter(Image& image)
   return result;
 }
 
-bool DanProcessor::Menu_OS_PlusShapedMedianFilter(Image& image)
+bool DanProcessor::Menu_RankOrderFilters_PlusShapedMedianFilter(Image& image)
 {
   // Make sure image isn't null
   if (image.IsNull()) return false;

@@ -77,11 +77,12 @@ bool DerekProcessor::filterStatistic(Image& image, operation op)
   Image copy;                           // Copy of original image
   int img_w;                            // Overal image width
   int img_h;                            // Overal image height
-  int mask_w;                           // The width of the filter
+  int mask_w = 3;                       // The width of the filter
   int val[3];                           // New values of all colors
   int center;                           // Center of mask (x and y are the same in any case)
-  uint i, j, k, l, x, y;                 // Temporary variables
-  int min_thresh, max_thresh;           // Thresholds
+  uint i, j, k, l, x, y, m;             // Temporary variables
+  int threshold = 0;                        // Threshold for noise removal
+  int sum[3] = {0};
 
   vector<int> red_list;                 // Intensity values for red
   vector<int> gre_list;                 // Intensity values for green
@@ -91,12 +92,11 @@ bool DerekProcessor::filterStatistic(Image& image, operation op)
   copy = image;
 
   // Ask the user for the dimensions of the filer
-  if (!Dialog("Dialog").Add(mask_w, "Filter Width").Show() || mask_w < image.Width() || mask_w < image.Height() || mask_w < 2)
+  if (!Dialog("Dialog").Add(mask_w, "Filter Width").Show() || mask_w < 2)
       return false;
 
   // If this filter wants a threshold, ask for it.
-  if (op == NoiseClean && !Dialog("Linear Contrast").Add(min_thresh, "Minimum Threshold", -1, 255)
-        .Add(max_thresh, "Maximum Threshold", 0, 256).Show())
+  if (op == NoiseClean && !Dialog("Noise Removal").Add(threshold, "Threshold", 0, 255).Show())
     return false;
 
   // Get image dimensions
@@ -111,14 +111,6 @@ bool DerekProcessor::filterStatistic(Image& image, operation op)
   {
     for (j = 0; j < img_w; ++j)         // Loop over columns
     {
-
-      // first, check to see if the pixel value is inside of our threshold (for Noise Clean)
-      if (op == NoiseClean && copy[i][j].Intensity() < max_thresh && copy[i][j].Intensity() > min_thresh)
-      {
-          // if it is, don't bother with the mask on this pixel
-          continue;
-      }
-
       // Reset variables
       red_list.clear();
       gre_list.clear();
@@ -149,7 +141,7 @@ bool DerekProcessor::filterStatistic(Image& image, operation op)
         }
       }
 
-      if (op != Mean)
+      if (op != Mean && op != NoiseClean)
       {
           // Sort lists if they aren't going to be averaged
           sort(red_list.begin(), red_list.end());
@@ -169,13 +161,46 @@ bool DerekProcessor::filterStatistic(Image& image, operation op)
           break;
 
       case Max:  // set the new RGB values to the max values
-          val[0] = red_list[red_list.size()];
-          val[1] = gre_list[gre_list.size()];
-          val[2] = blu_list[blu_list.size()];
+          val[0] = red_list[red_list.size()-1];
+          val[1] = gre_list[gre_list.size()-1];
+          val[2] = blu_list[blu_list.size()-1];
           break;
 
       case NoiseClean:
-          // fall through and apply the median filter
+          sum[0] = 0;
+          sum[1] = 0;
+          sum[2] = 0; // the sum of the three colors
+
+          for( m = 0; m < red_list.size(); m++)
+          {
+              sum[0] += red_list[m];
+              sum[1] += gre_list[m];
+              sum[2] += blu_list[m];
+          }
+
+          sum[0] /= red_list.size();
+          sum[1] /= gre_list.size();
+          sum[2] /= blu_list.size();
+
+          // replace the pixel with the average if the value - the averages
+          //    exceed the user-specified threshold.
+
+          if (abs(sum[0] - copy[i][j].Red()) > threshold)
+            val[0] = sum[0];
+          else
+            val[0] = copy[i][j].Red();
+
+          if (abs(sum[1] - copy[i][j].Green()) > threshold)
+            val[1] = sum[1];
+          else
+            val[1] = copy[i][j].Green();
+
+          if (abs(sum[2] - copy[i][j].Blue()) > threshold)
+            val[2] = sum[2];
+          else
+            val[2] = copy[i][j].Blue();
+
+          break;
 
       case Median:  // find the medians, or the average of the two medians
           val[0] = red_list[red_list.size() / 2];
@@ -192,18 +217,21 @@ bool DerekProcessor::filterStatistic(Image& image, operation op)
           break;
 
       case Mean:
-      {
-          int sum[3] = {0}; // the sum of the three colors
-          for( i = 0; i < red_list.size(); i++)
-              sum[0] += red_list[i];
-              sum[1] += gre_list[i];
-              sum[2] += blu_list[i];
+          sum[0] = 0;
+          sum[1] = 0;
+          sum[2] = 0; // the sum of the three colors
+
+          for( m = 0; m < red_list.size(); m++)
+          {
+              sum[0] += red_list[m];
+              sum[1] += gre_list[m];
+              sum[2] += blu_list[m];
+          }
 
           val[0] = sum[0] / red_list.size();
           val[1] = sum[1] / gre_list.size();
           val[2] = sum[2] / blu_list.size();
           break;
-      }
 
       default:  // if it's any other operation, it should probably be a grayscale one.
 
@@ -238,17 +266,17 @@ bool DerekProcessor::filterStatisticGreyscale(Image& image, operation op)
 
   // Initialize variables
   Image copy;                           // Copy of original image
-  int mask_w;                           // The width of the filter
+  int mask_w = 3;                       // The width of the filter
   int img_w;                            // Overal image width
   int img_h;                            // Overal image height
   int val;                              // New values of all colors
   int center;                           // Center of mask (x and y are the same in any case)
-  int i, j, k, l, x, y, temp, avg;      // Temporary variables
+  int i, j, k, l, x, y, m, temp, avg;   // Temporary variables
 
-  vector<int> list;                 // Intensity values
+  vector<int> list;                     // Intensity values
 
   // Ask the user for the dimensions of the filer
-  if (!Dialog("Dialog").Add(mask_w, "Filter Width").Show() || mask_w < image.Width() || mask_w < image.Height() || mask_w < 2)
+  if (!Dialog("Dialog").Add(mask_w, "Filter Width").Show() || mask_w == 1)
       return false;
 
   // Copy image due to nature of algorithm
@@ -301,14 +329,14 @@ bool DerekProcessor::filterStatisticGreyscale(Image& image, operation op)
 
           // start by finding the mean
           avg = 0;
-          for( i = 0; i < list.size(); i++)
-              avg += list[i];
+          for( m = 0; m < list.size(); m++)
+              avg += list[m];
           avg = avg / list.size();
 
           // then find each square deviation and add them together
           temp = 0;
-          for ( i = 0; i < list.size(); i++)
-               temp += pow(list[i] - avg, 2);
+          for ( m = 0; m < list.size(); m++)
+               temp += pow(list[m] - avg, 2);
 
           // use the sum of the squared deviations to find the stdev
           temp /= list.size()-1; // we know that list.size() is > 1
@@ -316,7 +344,7 @@ bool DerekProcessor::filterStatisticGreyscale(Image& image, operation op)
           break;
 
       case Range:  // set the intensity to the range of surrounding pixel values
-          val = list[list.size()] - list[0];
+          val = list[list.size()-1] - list[0];
           break;
 
       default:  // if it's any other operation, it should probably be a non-grayscale one.
@@ -324,7 +352,7 @@ bool DerekProcessor::filterStatisticGreyscale(Image& image, operation op)
       }
 
       // Put new RGB values into image
-      image[i][j].SetIntensity(val);
+      image[i][j].SetGray(val);
     }
   }
 
@@ -332,34 +360,13 @@ bool DerekProcessor::filterStatisticGreyscale(Image& image, operation op)
 }
 
 
-
-
 /***************************************************************************//**
  * Neighborhood Processes
  ******************************************************************************/
 
-/***************************************************************************//**
- * Menu_EdgeDetection_KirschEdgeDetection
- * Author - Derek Stotz
- *
- * Applies Kirsch Edge Detection to an image.
- *
- * Parameters -
-            image - the image object to manipulate.
- *
- * Returns
- *          true if successful, false if not
- ******************************************************************************/
-bool DerekProcessor::Menu_EdgeDetection_KirschEdgeDetection(Image& image)
-{
-  // Make sure image isn't null
-  if (image.IsNull()) return false;
-  
-  return true;
-}
 
 /***************************************************************************//**
- * Menu_EdgeDetection_KirschEdgeDetection
+ * Menu_EdgeDetection_KirschEdgeMagnitude
  * Author - Derek Stotz
  *
  * Applies Kirsch Edge Detection to an image.
@@ -374,29 +381,110 @@ bool DerekProcessor::Menu_EdgeDetection_KirschEdgeMagnitude(Image& image)
 {
   // Make sure image isn't null
   if (image.IsNull()) return false;
-  
-  return true;
-}
 
-/***************************************************************************//**
- * Menu_DerekFunctions_MinMaxStandardDeviationEdgeDetection
- * Author - Derek Stotz
- *
- * Applies a so-called "Min-Max Standard Deviation" edge detection filter to the image.
- * this is based on the filter invented for a senior design project in 2014, and is being
- * implemented out of curiosity.  Each pixel is shaded with an intensity proportional to the
- * size of the maximum standard deviation between any two sides of any of 8 regional bifurcations.
- *
- * Parameters -
-            image - the image object to manipulate.
- *
- * Returns
- *          true if successful, false if not
- ******************************************************************************/
-bool DerekProcessor::Menu_DerekFunctions_MinMaxStandardDeviationEdgeDetection(Image& image)
-{
-  // Make sure image isn't null
-  if (image.IsNull()) return false;
+  // Initialize variables
+  Image copy;                           // Copy of original image
+  int img_w;                            // Overal image width
+  int img_h;                            // Overal image height
+  int max;                              // Magnitude of max response
+  int sum[8];                           // Sum of responsivenesses
+  int center_x;                         // Center of mask
+  int center_y;                         // Center of mask
+  int i, j, k, l, m, x, y;              // Temporary variables
+  int mask[8][3][3] = {{
+    {-3, -3,  5},
+    {-3,  0,  5},
+    {-3, -3,  5}
+  }, {
+    {-3,  5,  5},
+    {-3,  0,  5},
+    {-3, -3, -3}
+  }, {
+    { 5,  5,  5},
+    {-3,  0, -3},
+    {-3, -3, -3}
+  }, {
+    { 5,  5, -3},
+    { 5,  0, -3},
+    {-3, -3, -3}
+  }, {
+    { 5, -3, -3},
+    { 5,  0, -3},
+    { 5, -3, -3}
+  }, {
+    {-3, -3, -3},
+    { 5,  0, -3},
+    { 5,  5, -3}
+  }, {
+    {-3, -3, -3},
+    {-3,  0, -3},
+    { 5,  5,  5}
+  }, {
+    {-3, -3, -3},
+    {-3,  0,  5},
+    {-3,  5,  5}
+  }};
+  int mask_w = 3;
+  int mask_h = 3;
+
+  // Copy image due to nature of algorithm
+  copy = image;
+
+  // Get image dimensions
+  img_w = image.Width();
+  img_h = image.Height();
+
+  // Find center of mask
+  center_x = 1;
+  center_y = 1;
+
+  // Begin applying mask to image
+  for (i = 0; i < img_h; ++i)           // Loop over rows
+  {
+    for (j = 0; j < img_w; ++j)         // Loop over columns
+    {
+      // Reset variables
+      max = -1;
+      for (m = 0; m < 8; ++m)
+        sum[m] = 0;
+
+      // Center each mask over pixel
+      for (k = 0; k < mask_h; ++k)      // Loop over mask rows
+      {
+        for (l = 0; l < mask_w; ++l)    // Loop over mask columns
+        {
+          for (m = 0; m < 8; ++m)       // Loop over all masks
+          {
+            // Temporarily store variable of current pixel we're going to sum
+            x = j + (l - center_x);
+            y = i + (k - center_y);
+
+            // If a pixel would be out of bounds, use nearest valid pixel
+            if (x < 0)      x = 0;
+            if (x >= img_w) x = img_w - 1;
+            if (y < 0)      y = 0;
+            if (y >= img_h) y = img_h - 1;
+
+            // Add intensity values to sum with weights
+            sum[m] += copy[y][x].Intensity() * mask[m][k][l];
+          }
+        }
+      }
+
+      // Find mask with max response
+      for (m = 0; m < 8; ++m)
+      {
+        if (sum[m] > max)
+        {
+          // clip the max sum
+          max = std::max(0,min(255, sum[m]));
+        }
+      }
+
+      // Put new intensity into image
+      image[i][j].SetGray(min(255, max));
+    }
+  }
 
   return true;
 }
