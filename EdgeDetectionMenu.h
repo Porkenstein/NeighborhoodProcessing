@@ -27,6 +27,10 @@ class EdgeDetectionMenu : public QObject
 {
   Q_OBJECT;
   
+  private:
+    bool sobel(Image& image, bool mag);
+    bool kirsch(Image& image, bool mag);
+  
   public slots:
     bool Menu_EdgeDetection_3x3SharpeningFilter(Image& image);
     bool Menu_EdgeDetection_Emboss(Image& image);
