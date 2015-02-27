@@ -200,7 +200,7 @@ bool EdgeDetectionMenu::Menu_EdgeDetection_SobelDirections(Image& image)
  * Returns
  *          true if successful, false if not
  ******************************************************************************/
-bool DerekProcessor::Menu_EdgeDetection_KirschMagnitude(Image& image)
+bool EdgeDetectionMenu::Menu_EdgeDetection_KirschMagnitude(Image& image)
 {
   // Make sure image isn't null
   if (image.IsNull()) return false;
@@ -347,7 +347,7 @@ bool EdgeDetectionMenu::Menu_EdgeDetection_KirschDirections(Image& image)
  * Returns
  *          true if successful, false if not
  ******************************************************************************/
-bool DerekProcessor::Menu_EdgeDetection_StandardDeviation(Image& image)
+bool EdgeDetectionMenu::Menu_EdgeDetection_StandardDeviation(Image& image)
 {
   return this->filterStatisticGreyscale(image, StandardDeviation);
 }
@@ -365,7 +365,7 @@ bool DerekProcessor::Menu_EdgeDetection_StandardDeviation(Image& image)
  * Returns
  *          true if successful, false if not
  ******************************************************************************/
-bool DerekProcessor::Menu_EdgeDetection_RangeFilter(Image& image)
+bool EdgeDetectionMenu::Menu_EdgeDetection_RangeFilter(Image& image)
 {
   return this->filterStatisticGreyscale(image, Range);
 }
