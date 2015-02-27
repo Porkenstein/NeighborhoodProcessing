@@ -3,7 +3,7 @@
  *
  * Author - Dan Andrus
  *
- * Date - January 30, 2015
+ * Date - February 25, 2015
  *
  * Details - Contains the declaration for the DanProcessor class.
  *
@@ -21,15 +21,14 @@
 using namespace std;
 
 /***************************************************************************//**
- * DanPreprocessor
+ * DanProcessor
  *
  * Author - DanAndrus
  *
  * Child of QObject class.
  *
- * Declares various point processes that can be applied to images using QT.
- * Allows users to negate, posterize, and brighten images, as well as apply
- * binary threshold, linear contrast, and 8-level pseudocolor processes.
+ * Declares various neighborhood processes that can be applied to images using
+ * QT.
  ******************************************************************************/
 class DanProcessor : public QObject
 {

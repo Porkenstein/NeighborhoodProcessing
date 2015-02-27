@@ -3,10 +3,10 @@
  *
  * Author - Dan Andrus
  *
- * Date - January 30, 2015
+ * Date - February 26, 2015
  *
- * Details - Defines some basic point processes that can be applied to images.
- * To be used with QT image library, or QT for short.
+ * Details - Defines some basic neighborhood processes that can be applied to
+ * images. To be used with QT image library.
  *
  ******************************************************************************/
 
@@ -14,6 +14,21 @@
 #include "DanProcessor.h"
 
 
+/***************************************************************************//**
+ * filterAverage
+ * Author - Dan Andrus
+ *
+ * Applies an averaging filter to an image using the supplied mask.
+ *
+ * Parameters - 
+ *          image - the image object to manipulate.
+ *          mask - the 2d integer mask to apply to the image
+ *          mask_w - columns in the mask
+ *          mask_h - rows in the mask
+ *
+ * Returns
+ *          True if the operation was successful, false if not
+ ******************************************************************************/
 bool DanProcessor::filterAverage(Image& image, int** mask, int mask_w, int mask_h, bool gray = false)
 {
   // Make sure image isn't null
@@ -105,6 +120,21 @@ bool DanProcessor::filterAverage(Image& image, int** mask, int mask_w, int mask_
   return true;
 }
 
+/***************************************************************************//**
+ * filterMedian
+ * Author - Dan Andrus
+ *
+ * Applies a median filter to an image using the supplied mask.
+ *
+ * Parameters - 
+ *          image - the image object to manipulate.
+ *          mask - the 2d integer mask to apply to the image
+ *          mask_w - columns in the mask
+ *          mask_h - rows in the mask
+ *
+ * Returns
+ *          True if the operation was successful, false if not
+ ******************************************************************************/
 bool DanProcessor::filterMedian(Image& image, int** mask, int mask_w, int mask_h)
 {
   // Make sure image isn't null
@@ -198,6 +228,21 @@ bool DanProcessor::filterMedian(Image& image, int** mask, int mask_w, int mask_h
   return true;
 }
 
+/***************************************************************************//**
+ * filterEmboss
+ * Author - Dan Andrus
+ *
+ * Embosses the given image object.
+ *
+ * Parameters - 
+ *          image - the image object to manipulate.
+ *          mask - the 2d integer mask to apply to the image
+ *          mask_w - columns in the mask
+ *          mask_h - rows in the mask
+ *
+ * Returns
+ *          True if the operation was successful, false if not
+ ******************************************************************************/
 bool DanProcessor::filterEmboss(Image& image, int** mask, int mask_w, int mask_h)
 {
   // Make sure image isn't null
@@ -266,6 +311,20 @@ bool DanProcessor::filterEmboss(Image& image, int** mask, int mask_w, int mask_h
   return true;
 }
 
+/***************************************************************************//**
+ * sobel
+ * Author - Dan Andrus
+ *
+ * Applies the Kirsch edge operator to an image, either highlighting edges or
+ * illustrating edge directions based on the mag parameter.
+ *
+ * Parameters - 
+ *          image - the image object to manipulate.
+ *          mag - if true, highlights edges. If false, illustrates edge angles
+ *
+ * Returns
+ *          True if the operation was successful, false if not
+ ******************************************************************************/
 bool DanProcessor::sobel(Image& image, bool mag)
 {
   // Make sure image isn't null
@@ -355,6 +414,18 @@ bool DanProcessor::sobel(Image& image, bool mag)
   return true;
 }
 
+/***************************************************************************//**
+ * kirschDir
+ * Author - Dan Andrus
+ *
+ * Applies the Kirsch edge operator to an image, illustrating edge directions.
+ *
+ * Parameters - 
+ *          image - the image object to manipulate.
+ *
+ * Returns
+ *          True if the operation was successful, false if not
+ ******************************************************************************/
 bool DanProcessor::kirschDir(Image &image)
 {
   // Make sure image isn't null
@@ -469,6 +540,19 @@ bool DanProcessor::kirschDir(Image &image)
   return true;
 }
 
+/***************************************************************************//**
+ * alloc2d
+ * Author - Dan Andrus
+ *
+ * Allocates a new 2d row-major integer array
+ *
+ * Parameters - 
+ *          w - number of columns in the array
+ *          h - number of rows in the array
+ *
+ * Returns
+ *          Pointer to the 2d integer array
+ ******************************************************************************/
 int** DanProcessor::alloc2d(int w, int h)
 {
   int** array;
@@ -478,6 +562,17 @@ int** DanProcessor::alloc2d(int w, int h)
   return array;
 }
 
+/***************************************************************************//**
+ * dealloc2d
+ * Author - Dan Andrus
+ *
+ * Deallocate a 2-dimensional row-major integer array
+ *
+ * Parameters - 
+ *          array - Pointer to the array of int pointers to deallocate
+ *          w - number of columns in the array
+ *          h - number of rows in the array
+ ******************************************************************************/
 void DanProcessor::dealloc2d(int** array, int w, int h)
 {
   for (int i = 0; i < h; i++)
@@ -486,13 +581,13 @@ void DanProcessor::dealloc2d(int** array, int w, int h)
 }
 
 /***************************************************************************//**
- * Menu_DanFunctions_Negate
+ * Menu_Smoothing_3x3SmoothingFilter
  * Author - Dan Andrus
  *
- * Negates both color and grayscale images.
+ * Smooths an image using a 3x3 smoothing filter
  *
  * Parameters - 
-            image - the image object to manipulate.
+ *          image - the image object to manipulate.
  *
  * Returns
  *          true if successful, false if not
@@ -529,6 +624,18 @@ bool DanProcessor::Menu_Smoothing_3x3SmoothingFilter(Image& image)
   return result;
 }
 
+/***************************************************************************//**
+ * Menu_EdgeDetection_3x3SharpeningFilter
+ * Author - Dan Andrus
+ *
+ * Sharpens an image using a 3x3 mask.
+ *
+ * Parameters - 
+ *          image - the image object to manipulate.
+ *
+ * Returns
+ *          true if successful, false if not
+ ******************************************************************************/
 bool DanProcessor::Menu_EdgeDetection_3x3SharpeningFilter(Image& image)
 {
   // Make sure image isn't null
@@ -562,6 +669,20 @@ bool DanProcessor::Menu_EdgeDetection_3x3SharpeningFilter(Image& image)
 }
 
 bool DanProcessor::Menu_RankOrderFilters_PlusShapedMedianFilter(Image& image)
+/***************************************************************************//**
+ * Menu_OS_PlusShapedMedianFilter
+ * Author - Dan Andrus
+ *
+ * Slightly blurs an image or attempts to remove noise from an image using a
+ * plus-shaped 3x3 median filter
+ *
+ * Parameters - 
+ *          image - the image object to manipulate.
+ *
+ * Returns
+ *          true if successful, false if not
+ ******************************************************************************/
+bool DanProcessor::Menu_RankOrderFilters_PlusShapedMedianFilter(Image& image)
 {
   // Make sure image isn't null
   if (image.IsNull()) return false;
@@ -593,6 +714,18 @@ bool DanProcessor::Menu_RankOrderFilters_PlusShapedMedianFilter(Image& image)
   return result;
 }
 
+/***************************************************************************//**
+ * Menu_EdgeDetection_Emboss
+ * Author - Dan Andrus
+ *
+ * Embosses an image
+ *
+ * Parameters - 
+ *          image - the image object to manipulate.
+ *
+ * Returns
+ *          true if successful, false if not
+ ******************************************************************************/
 bool DanProcessor::Menu_EdgeDetection_Emboss(Image& image)
 {
   // Make sure image isn't null
@@ -625,6 +758,18 @@ bool DanProcessor::Menu_EdgeDetection_Emboss(Image& image)
   return result;
 }
 
+/***************************************************************************//**
+ * Menu_EdgeDetection_LaplacianEdges
+ * Author - Dan Andrus
+ *
+ * Highlights images using a Laplacian filter
+ *
+ * Parameters - 
+ *          image - the image object to manipulate.
+ *
+ * Returns
+ *          true if successful, false if not
+ ******************************************************************************/
 bool DanProcessor::Menu_EdgeDetection_LaplacianEdges(Image& image)
 {
   // Make sure image isn't null
@@ -657,6 +802,18 @@ bool DanProcessor::Menu_EdgeDetection_LaplacianEdges(Image& image)
   return result;
 }
 
+/***************************************************************************//**
+ * Menu_EdgeDetection_SobelEdgeMagnitudes
+ * Author - Dan Andrus
+ *
+ * Highlights edges using Sobel edge detection masks
+ *
+ * Parameters - 
+ *          image - the image object to manipulate.
+ *
+ * Returns
+ *          true if successful, false if not
+ ******************************************************************************/
 bool DanProcessor::Menu_EdgeDetection_SobelEdgeMagnitudes(Image& image)
 {
   if (image.IsNull()) return false;
@@ -667,6 +824,18 @@ bool DanProcessor::Menu_EdgeDetection_SobelEdgeMagnitudes(Image& image)
   return result;
 }
 
+/***************************************************************************//**
+ * Menu_EdgeDetection_SobelEdgeDirections
+ * Author - Dan Andrus
+ *
+ * Illustrates edge directions using Sobel edge detection masks.
+ *
+ * Parameters - 
+ *          image - the image object to manipulate.
+ *
+ * Returns
+ *          true if successful, false if not
+ ******************************************************************************/
 bool DanProcessor::Menu_EdgeDetection_SobelEdgeDirections(Image& image)
 {
   if (image.IsNull()) return false;
@@ -677,6 +846,18 @@ bool DanProcessor::Menu_EdgeDetection_SobelEdgeDirections(Image& image)
   return result;
 }
 
+/***************************************************************************//**
+ * Menu_EdgeDetection_KirschEdgeDirections
+ * Author - Dan Andrus
+ *
+ * Illustrates edge directions using the Kirsch compass edge detection masks.
+ *
+ * Parameters - 
+ *          image - the image object to manipulate.
+ *
+ * Returns
+ *          true if successful, false if not
+ ******************************************************************************/
 bool DanProcessor::Menu_EdgeDetection_KirschEdgeDirections(Image& image)
 {
   if (image.IsNull()) return false;
