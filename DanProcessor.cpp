@@ -668,7 +668,6 @@ bool DanProcessor::Menu_EdgeDetection_3x3SharpeningFilter(Image& image)
   return result;
 }
 
-bool DanProcessor::Menu_RankOrderFilters_PlusShapedMedianFilter(Image& image)
 /***************************************************************************//**
  * Menu_OS_PlusShapedMedianFilter
  * Author - Dan Andrus
